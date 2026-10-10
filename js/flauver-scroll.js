@@ -149,7 +149,7 @@
       S.jump = Math.max(0, (S.jump || 0) - 1);
       S.vel = lerp(S.vel, (S.y - prevY) / Math.max(dt, 1e-3), 1 - Math.exp(-dt * 6));
       var time = now / 1000;
-      var auto = small ? [Math.sin(time * 0.35) * 0.5, Math.cos(time * 0.27) * 0.35] : [Math.sin(time * 0.25) * 0.25, Math.cos(time * 0.2) * 0.2];
+      var auto = small ? [Math.sin(time * 0.22) * 0.14, Math.cos(time * 0.17) * 0.1] : [Math.sin(time * 0.25) * 0.25, Math.cos(time * 0.2) * 0.2];
       S.px = lerp(S.px, S.tpx + auto[0], 1 - Math.exp(-dt * 3)); S.py = lerp(S.py, S.tpy + auto[1], 1 - Math.exp(-dt * 3));
       if (ready) S.fade = Math.min(1, S.fade + dt * 0.8);
       var st = state(S.y, opts.portrait ? opts.portrait(w, h) : w / h < 0.95); S.cur = st;

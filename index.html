@@ -202,6 +202,16 @@ html,body{margin:0;background:#EFEBE4}
   .rail button{min-height:16px}
 }
 @media (hover:hover) and (pointer:fine) and (min-width:900px) and (min-aspect-ratio:19/20){.cursor{display:flex}}
+@media (max-width:899px), (max-aspect-ratio:19/20){
+  .on .meta{transition:opacity .5s}
+  .on .ln>span{transition:transform .8s cubic-bezier(.16,1,.3,1)}
+  .on .ln:nth-child(2)>span{transition-delay:.07s}.on .ln:nth-child(3)>span{transition-delay:.14s}.on .ln:nth-child(4)>span{transition-delay:.21s}
+  .on.fx-blur .ln>span{transition:transform .8s cubic-bezier(.16,1,.3,1),filter .7s,opacity .6s}
+  .on .scrub,.on.fx-blur .scrub{transition:opacity .7s .05s,transform .8s .05s cubic-bezier(.16,1,.3,1),filter .7s .05s}
+  .on .sub{transition:opacity .7s .2s,transform .7s .2s cubic-bezier(.16,1,.3,1)}
+  .on .pass{transition:clip-path .9s .2s cubic-bezier(.16,1,.3,1)}
+  .on.fx-side .pass,.on.fx-side .steps{transition:transform .8s .2s cubic-bezier(.16,1,.3,1),opacity .7s .2s,clip-path .9s .2s cubic-bezier(.16,1,.3,1)}
+}
 @media (prefers-reduced-motion:reduce){.ln>span,.on .ln>span{transform:none;transition:none}.pass{clip-path:none}.cue span{animation:none}}
 </style>
 </helmet>
@@ -303,12 +313,6 @@ html,body{margin:0;background:#EFEBE4}
   <section class="ch R {{c.k11}} fx-side" aria-label="Контакты">
     <div class="meta">Контакты</div>
     <h2 class="h"><span class="ln"><span>Соберём работу</span></span><span class="ln"><span>для вас.</span></span></h2>
-    <dl class="pass contacts" style="margin: 0">
-      <dt>Телефон</dt><dd>&nbsp;</dd>
-      <dt>Telegram</dt><dd>&nbsp;</dd>
-      <dt>Адрес</dt><dd>&nbsp;</dd>
-      <dt>Часы</dt><dd>&nbsp;</dd>
-    </dl>
   </section>
 
   <div class="ring {{ringOn}}" aria-hidden="true">
@@ -446,7 +450,7 @@ class Component extends DCLogic {
     this.onTilt = (e) => {
       if (!this.eng || e.gamma === null || !this.portrait(window.innerWidth, window.innerHeight)) return;
       const cl = (v) => Math.max(-1, Math.min(1, v));
-      this.eng.setTilt(cl(e.gamma / 22), cl(((e.beta || 45) - 45) / 22));
+      this.eng.setTilt(cl(e.gamma / 40) * 0.35, cl(((e.beta || 45) - 45) / 40) * 0.35);
     };
     this.onKey = (e) => {
       if (e.target && e.target.closest && e.target.closest('input,select,textarea')) return;
@@ -498,9 +502,10 @@ class Component extends DCLogic {
     const n = Math.max(0, Math.min(this.SHOTS.length - 1, i));
     if (n === this.state.cur && !this.tw) return;
     const from = this.y, to = this.rest(n), dist = Math.abs(n - this.state.cur);
-    const dur = this.reduce ? 500 : Math.min(3400, 2000 + (dist - 1) * 220);
+    const port = this.isPort();
+    const dur = this.reduce ? 500 : (port ? Math.min(2600, 1500 + (dist - 1) * 180) : Math.min(3400, 2000 + (dist - 1) * 220));
     this.dragT = 0; this.dragOff = 0;
-    this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false };
+    this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false, showAt: port ? 0.42 : 0.62 };
     this.setState({ ch: -1, cur: n, step: 0 });
   }
   frame() {
@@ -512,7 +517,7 @@ class Component extends DCLogic {
       const t = this.tw, k = Math.min(1, (now - t.start) / t.dur);
       const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
       this.y = t.from + (t.to - t.from) * e;
-      if (!t.shown && k > 0.62) { t.shown = true; this.arrivedAt = now; this.setState({ ch: t.target, tch: t.target }); }
+      if (!t.shown && k > t.showAt) { t.shown = true; this.arrivedAt = now; this.setState({ ch: t.target, tch: t.target }); }
       if (k >= 1) {
         this.tw = null; this.restAt = now; this.lockUntil = now + 120;
         if (this.queue) { const q = this.queue; this.queue = 0; this.lockUntil = 0; const n = this.nb(this.state.cur, q); if (n >= 0) this.go(n); }
