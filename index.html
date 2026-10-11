@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Флаувер — авторская флористика</title>
 <meta name="description" content="Авторские работы флористов: замысел, состав, серия.">
+<link rel="preload" as="image" href="img/m/cover-mobile.webp" media="(max-width: 899px) and (orientation: portrait)" fetchpriority="high">
+<link rel="preload" as="image" href="img/cover-desktop.jpg" media="(min-width: 900px) and (pointer: fine)" fetchpriority="high">
 <style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}</style>
 </head>
 <body>
@@ -316,14 +318,14 @@ html,body{margin:0;background:#EFEBE4}
 
   <div class="ring {{ringOn}}" aria-hidden="true">
     <div class="spin" ref="{{setSpin}}">
-      <div class="card" style="transform: rotateY(0deg) translateZ(var(--rz))"><img src="img/bouquet-dark-window.jpg" alt=""><i>тёмная · пионы у окна</i></div>
-      <div class="card" style="transform: rotateY(45deg) translateZ(var(--rz))"><img src="img/anemones.jpg" alt=""><i>тёмная · анемоны</i></div>
-      <div class="card" style="transform: rotateY(90deg) translateZ(var(--rz))"><img src="img/dahlias.jpg" alt=""><i>тёмная · георгины</i></div>
-      <div class="card" style="transform: rotateY(135deg) translateZ(var(--rz))"><img src="img/petal-detail.jpg" alt=""><i>деталь</i></div>
-      <div class="card" style="transform: rotateY(180deg) translateZ(var(--rz))"><img src="img/peony-dark.jpg" alt=""><i>тёмная · пион</i></div>
-      <div class="card" style="transform: rotateY(225deg) translateZ(var(--rz))"><img src="img/tenderness.jpg" alt=""><i>светлая · нежность</i></div>
-      <div class="card" style="transform: rotateY(270deg) translateZ(var(--rz))"><img src="img/three-roses.jpg" alt=""><i>светлая · три розы</i></div>
-      <div class="card" style="transform: rotateY(315deg) translateZ(var(--rz))"><img src="img/lightness.jpg" alt=""><i>светлая · лёгкость</i></div>
+      <div class="card" style="transform: rotateY(0deg) translateZ(var(--rz))"><img src="{{th.bouquet-dark-window}}" alt="" decoding="async"><i>тёмная · пионы у окна</i></div>
+      <div class="card" style="transform: rotateY(45deg) translateZ(var(--rz))"><img src="{{th.anemones}}" alt="" decoding="async"><i>тёмная · анемоны</i></div>
+      <div class="card" style="transform: rotateY(90deg) translateZ(var(--rz))"><img src="{{th.dahlias}}" alt="" decoding="async"><i>тёмная · георгины</i></div>
+      <div class="card" style="transform: rotateY(135deg) translateZ(var(--rz))"><img src="{{th.petal-detail}}" alt="" decoding="async"><i>деталь</i></div>
+      <div class="card" style="transform: rotateY(180deg) translateZ(var(--rz))"><img src="{{th.peony-dark}}" alt="" decoding="async"><i>тёмная · пион</i></div>
+      <div class="card" style="transform: rotateY(225deg) translateZ(var(--rz))"><img src="{{th.tenderness}}" alt="" decoding="async"><i>светлая · нежность</i></div>
+      <div class="card" style="transform: rotateY(270deg) translateZ(var(--rz))"><img src="{{th.three-roses}}" alt="" decoding="async"><i>светлая · три розы</i></div>
+      <div class="card" style="transform: rotateY(315deg) translateZ(var(--rz))"><img src="{{th.lightness}}" alt="" decoding="async"><i>светлая · лёгкость</i></div>
     </div>
   </div>
 
@@ -350,6 +352,9 @@ class Component extends DCLogic {
     super(props);
     this.state = { ch: 0, tch: 0, cur: 0, ready: false, step: 0 };
     this.IMGS = ['img/peony.jpg', 'img/bouquet-dark-close.jpg', 'img/bouquet-dark-window.jpg', 'img/dark-garden.jpg', 'img/petal-red.jpg', 'img/peony-dark.jpg', 'img/anemones.jpg', 'img/dahlias.jpg', 'img/petal-detail.jpg', 'data:image/gif;base64,R0lGODlhAQABAAAAACw=', 'img/tenderness.jpg', 'img/lightness.jpg', 'data:image/gif;base64,R0lGODlhAQABAAAAACw=', 'img/rose-drop.jpg', 'img/three-roses.jpg', 'img/centerpiece.jpg', 'img/atelier.jpg', 'img/cover-desktop.jpg', 'img/cover-mobile.jpg'];
+    // Телефоны получают облегчённые копии (WebP до 1600 px, img/m/) — в 4 раза легче оригиналов.
+    const lite = window.matchMedia('(max-width: 899px)').matches || (window.matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 900);
+    if (lite) this.IMGS = this.IMGS.map((u) => u.indexOf('img/') === 0 ? u.replace('img/', 'img/m/').replace(/\.jpg$/, '.webp') : u);
     const L = [0.034, 0.08, 0.56, 0.9], R = [0.44, 0.08, 0.95, 0.9], M = [0, 0.46, 1, 0.92];
     this.L = L; this.R = R; const F = [0, 0, 1, 1];
     this.SHOTS = [
@@ -560,6 +565,9 @@ class Component extends DCLogic {
       navCls: s.cur === 0 && s.ch !== -1 ? 'nav0' : '',
       c: c,
       ringOn: s.ch === 7 ? 'on' : '',
+      // Миниатюры кольца галереи (глава 8): src появляется, когда первый экран готов, —
+      // до этого они не конкурируют с ним за сеть.
+      th: s.ready ? { 'bouquet-dark-window': 'img/t/bouquet-dark-window.webp', anemones: 'img/t/anemones.webp', dahlias: 'img/t/dahlias.webp', 'petal-detail': 'img/t/petal-detail.webp', 'peony-dark': 'img/t/peony-dark.webp', tenderness: 'img/t/tenderness.webp', 'three-roses': 'img/t/three-roses.webp', lightness: 'img/t/lightness.webp' } : {},
       steps: stepsDef.map((d, i) => ({ n: '0' + (i + 1), t: d[0], d: d[1], cls: i === s.step ? 'on' : '' })),
       setRoot: (el) => { this.root = el; if (el) this.applyBand(); },
       setCanvas: (el) => { this.canvas = el; },

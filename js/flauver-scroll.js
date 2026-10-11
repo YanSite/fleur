@@ -100,17 +100,35 @@
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       return t;
     }
-    imgs.forEach(function (url, i) {
-      tex[i] = black; dep[i] = black; asp[i] = 1;
+    // Фото грузятся по мере надобности, а не все сразу: сначала кадр первого экрана
+    // (по нему страница считается готовой), затем остальные в порядке сцен, не больше
+    // двух одновременно. Кадр, до которого дошли раньше, чем он загрузился, идёт вне очереди.
+    var asked = [], done = [], queue = [], active = 0, PAR = opts.parallel || 2;
+    imgs.forEach(function (url, i) { tex[i] = black; dep[i] = black; asp[i] = 1; });
+    function shotImg(s, portrait) { return (portrait && s.mimg !== undefined) ? s.mimg : s.img; }
+    function isPortrait() { var w = canvas.clientWidth || window.innerWidth, h = canvas.clientHeight || window.innerHeight; return opts.portrait ? opts.portrait(w, h) : w / h < 0.95; }
+    var first = shotImg(shots[0], isPortrait());
+    function finish(i, im) {
+      if (im) { tex[i] = mk(im); dep[i] = mk(depthCanvas(im)); asp[i] = im.width / im.height; }
+      done[i] = true; active--; loaded++;
+      if (!ready && done[first]) { ready = true; if (opts.onProgress) opts.onProgress(1); if (opts.onReady) opts.onReady(); }
+      pump();
+    }
+    function start(i) {
+      active++;
       var im = new Image(); im.decoding = 'async';
       im.onload = function () {
-        tex[i] = mk(im); dep[i] = mk(depthCanvas(im)); asp[i] = im.width / im.height; loaded++;
-        if (opts.onProgress) opts.onProgress(loaded / imgs.length);
-        if (loaded === imgs.length) { ready = true; if (opts.onReady) opts.onReady(); }
+        // decode() — декодирование вне главного потока до заливки в текстуру
+        var up = function () { finish(i, im); };
+        if (im.decode) im.decode().then(up, up); else up();
       };
-      im.onerror = function () { loaded++; if (loaded === imgs.length) { ready = true; if (opts.onReady) opts.onReady(); } };
-      im.src = url;
-    });
+      im.onerror = function () { finish(i, null); };
+      im.src = imgs[i];
+    }
+    function pump() { while (active < PAR && queue.length) start(queue.shift()); }
+    function need(i, urgent) { if (asked[i]) return; asked[i] = true; if (urgent) queue.unshift(i); else queue.push(i); pump(); }
+    need(first, true);
+    (function () { var p = isPortrait(); shots.forEach(function (s) { need(shotImg(s, p), false); }); })();
 
     var S = { y: 0, ty: 0, vel: 0, px: 0, py: 0, tpx: 0, tpy: 0, fade: 0 };
     var T = 0.5; // transition length in viewport heights
@@ -154,6 +172,7 @@
       if (ready) S.fade = Math.min(1, S.fade + dt * 0.8);
       var st = state(S.y, opts.portrait ? opts.portrait(w, h) : w / h < 0.95); S.cur = st;
       if (opts.onFrame) opts.onFrame(S.y, st);
+      need(st.a.img, true); need(st.b.img, true);
 
       gl.viewport(0, 0, W, H); gl.disable(gl.BLEND);
       gl.useProgram(prog.p); var u = prog.u;
