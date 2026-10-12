@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Флаувер — авторская флористика</title>
+<title>Флаувер — Концепт сайта флористической мастерской · Есть что показать</title>
 <meta name="description" content="Авторские работы флористов: замысел, состав, серия.">
 <link rel="preload" as="image" href="img/m/cover-mobile.webp" media="(max-width: 899px) and (orientation: portrait)" fetchpriority="high">
 <link rel="preload" as="image" href="img/cover-desktop.jpg" media="(min-width: 900px) and (pointer: fine)" fetchpriority="high">
-<style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}</style>
+<style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+concept-card{--cc-font:'Onest',sans-serif;--cc-top:12px;--cc-left:112px}
+@media (min-width:900px) and (min-aspect-ratio:19/20){concept-card{--cc-top:24px;--cc-left:168px}}
+@media (max-height:519px) and (min-aspect-ratio:4/3){concept-card{--cc-top:10px;--cc-left:128px}}</style>
 </head>
 <body>
 <x-dc>
@@ -314,6 +317,7 @@ html,body{margin:0;background:#EFEBE4}
   <section class="ch R {{c.k11}} fx-side" aria-label="Контакты">
     <div class="meta">Контакты</div>
     <h2 class="h"><span class="ln"><span>Соберём работу</span></span><span class="ln"><span>для вас.</span></span></h2>
+    <button class="btn ia" data-cc-talk>Обсудить ваш бизнес</button>
   </section>
 
   <div class="ring {{ringOn}}" aria-hidden="true">
@@ -511,6 +515,7 @@ class Component extends DCLogic {
     this.dragT = 0; this.dragOff = 0;
     this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false, showAt: port ? 0.42 : 0.62 };
     this.setState({ ch: -1, cur: n, step: 0 });
+    window.dispatchEvent(new CustomEvent('concept:final', { detail: n === this.SHOTS.length - 1 }));
   }
   frame() {
     if (!this.eng) return;
@@ -594,5 +599,6 @@ class Component extends DCLogic {
 </script>
 <script src="js/flauver-scroll.js"></script>
 <script src="js/runtime.js"></script>
+<script src="concept-card.js" defer data-category="флористическая мастерская" data-tone="light" data-position="tl" data-contact=".hcta,.hbtn"></script>
 </body>
 </html>
