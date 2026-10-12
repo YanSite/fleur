@@ -1,4 +1,4 @@
-/* Flauver — scroll-driven WebGL2 photo film. Real photographs, 2.5D depth parallax, noise dissolves, light beam, dust. No dependencies. */
+/* Флаувер: движок сцены — фотографии, переходы и камера по прокрутке. Без зависимостей. */
 (function () {
   'use strict';
   function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }

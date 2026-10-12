@@ -5,17 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Флаувер — Концепт сайта флористической мастерской · Есть что показать</title>
 <meta name="description" content="Авторские работы флористов: замысел, состав, серия.">
-<link rel="preload" as="image" href="img/m/cover-mobile.webp" media="(max-width: 899px) and (orientation: portrait)" fetchpriority="high">
-<link rel="preload" as="image" href="img/cover-desktop.jpg" media="(min-width: 900px) and (pointer: fine)" fetchpriority="high">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+#cover{position:fixed;inset:0;z-index:9;background:#EFEBE4;font-family:'Onest',sans-serif;color:#1F1D1B;transition:opacity .7s ease,visibility 0s .7s}
+#cover.done{opacity:0;visibility:hidden}
+#cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#cover b{position:absolute;left:20px;top:12px;line-height:44px;font-size:20px;font-weight:600;letter-spacing:-.01em}
+@media (min-width:900px) and (min-aspect-ratio:19/20){#cover b{left:48px;top:24px;font-size:22px}}
+@media (prefers-reduced-motion:reduce){#cover{transition:none}}
 concept-card{--cc-font:'Onest',sans-serif;--cc-top:12px;--cc-left:112px}
 @media (min-width:900px) and (min-aspect-ratio:19/20){concept-card{--cc-top:24px;--cc-left:168px}}
 @media (max-height:519px) and (min-aspect-ratio:4/3){concept-card{--cc-top:10px;--cc-left:128px}}</style>
 </head>
 <body>
-<x-dc>
+<div id="cover" aria-hidden="true"><picture><source media="(min-aspect-ratio: 19/20)" srcset="img/first-wide.webp"><img src="img/first-tall.webp" alt="" fetchpriority="high"></picture><b>Флаувер</b></div>
+<x-dc><template>
 <helmet>
-<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 html,body{margin:0;background:#EFEBE4}
 .film{position:relative;width:100%;height:100vh;overflow:hidden;overscroll-behavior:none;font-family:'Onest',sans-serif;--ink:#1F1D1B;--soft:#4E4A45;--line:rgba(31,29,27,.22);--paper:rgba(245,243,238,.92);--acc:#6B1E2E;color:var(--ink)}
@@ -101,10 +106,6 @@ html,body{margin:0;background:#EFEBE4}
 .fld select option{color:#1F1D1B}
 .quote{margin:0;font-size:34px;font-weight:500;line-height:1.02;letter-spacing:-.04em}
 .cursor{position:fixed;left:0;top:0;transform:translate(-300px,-300px);width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;border:1px solid #F5F3EE;mix-blend-mode:difference;z-index:8;pointer-events:none;display:none;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#F5F3EE;transition:width .3s,height .3s,margin .3s}
-.loader{position:fixed;inset:0;background:#EFEBE4;z-index:9;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 24px;transition:clip-path 1.2s cubic-bezier(.7,0,.2,1);clip-path:inset(0 0 0 0)}
-.loader.done{clip-path:inset(0 0 100% 0)}
-.loader b{font-size:44px;font-weight:600;letter-spacing:-.03em}
-.loader span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em}
 
 .ch.hero{top:84px;bottom:auto;gap:14px;overflow:visible}
 @media (max-height:720px){.steps li{padding:6px 0}.steps b{font-size:15px}.ch{gap:9px}.btn{min-height:44px}}
@@ -182,8 +183,6 @@ html,body{margin:0;background:#EFEBE4}
   .ch:not(.hero){max-height:none}
   .ch{overflow:visible}
   .ring{left:70%;top:50%}
-  .loader{padding:0 48px 40px}
-  .loader b{font-size:96px}
 }
 @media (hover:hover) and (pointer:fine) and (min-width:900px) and (min-aspect-ratio:19/20){
   .count .nxt{display:inline}}
@@ -276,7 +275,7 @@ html,body{margin:0;background:#EFEBE4}
     <div class="meta">Как рождается работа</div>
     <h2 class="h"><span class="ln"><span>От разговора</span></span><span class="ln"><span>до коробки.</span></span></h2>
     <ol class="steps">
-      <sc-for list="{{steps}}" as="st" hint-placeholder-count="4">
+      <sc-for list="{{steps}}" as="st">
         <li class="{{st.cls}}"><span class="mono" style="font-size: 11px; padding-top: 4px">{{st.n}}</span><b>{{st.t}}</b><p>{{st.d}}</p></li>
       </sc-for>
     </ol>
@@ -340,16 +339,15 @@ html,body{margin:0;background:#EFEBE4}
   </header>
   <div class="prog" ref="{{setProg}}"></div>
   <div class="count"><span>{{counter}}</span><span class="nxt">{{nextName}}</span></div>
-  <div class="ticks" aria-hidden="true"><span class="tc">{{counter}}</span><sc-for list="{{ticks}}" as="r" hint-placeholder-count="12"><i class="{{r.cls}}"></i></sc-for></div>
+  <div class="ticks" aria-hidden="true"><span class="tc">{{counter}}</span><sc-for list="{{ticks}}" as="r"><i class="{{r.cls}}"></i></sc-for></div>
   <nav class="rail" aria-label="Главы">
-    <sc-for list="{{rail}}" as="r" hint-placeholder-count="13">
+    <sc-for list="{{rail}}" as="r">
       <button class="{{r.cls}}" onClick="{{r.go}}" aria-label="{{r.name}}"><span>{{r.name}}</span></button>
     </sc-for>
   </nav>
   <div class="cursor" ref="{{setCursor}}">{{cursorLabel}}</div>
-  <div class="loader {{loadCls}}" ref="{{setLoader}}"><b>Флаувер</b><span ref="{{setPct}}">0%</span></div>
 </div>
-</x-dc>
+</template></x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
   constructor(props) {
@@ -408,11 +406,10 @@ class Component extends DCLogic {
       if (!this.canvas || !window.FlauverScroll) { if (tries++ < 160) this.bootT = setTimeout(boot, 50); return; }
       const eng = window.FlauverScroll.create(this.canvas, {
         shots: this.SHOTS, images: this.IMGS, follow: 16, portrait: (w, h) => this.portrait(w, h),
-        onProgress: (p) => { if (this.pct) this.pct.textContent = Math.round(p * 100) + '%'; },
-        onReady: () => { this.setState({ ready: true }); this.arrivedAt = performance.now(); this.restAt = performance.now(); },
+        onReady: () => { this.showScene(); this.arrivedAt = performance.now(); this.restAt = performance.now(); },
         onFrame: (y) => this.frame(y)
       });
-      if (!eng || !eng.ok) { this.setState({ ready: true }); return; }
+      if (!eng || !eng.ok) { this.showScene(); return; }
       this.eng = eng;
       this.y = this.rest(0); eng.setScroll(this.y); eng.jump();
     };
@@ -477,7 +474,7 @@ class Component extends DCLogic {
     window.addEventListener('pointermove', this.onMove, { passive: true });
     window.addEventListener('keydown', this.onKey);
     window.addEventListener('deviceorientation', this.onTilt);
-    this.safety = setTimeout(() => this.setState({ ready: true }), 9000);
+    this.safety = setTimeout(() => this.showScene(), 9000);
   }
   componentWillUnmount() {
     clearTimeout(this.bootT); clearTimeout(this.safety);
@@ -491,6 +488,8 @@ class Component extends DCLogic {
     window.removeEventListener('resize', this.onResize);
     if (this.eng) this.eng.dispose();
   }
+  // Сцена готова: статичная обложка первого кадра гаснет.
+  showScene() { if (this.state.ready) return; this.setState({ ready: true }); const c = document.getElementById('cover'); if (c) c.classList.add('done'); }
   isPort() { return this.portrait(window.innerWidth, window.innerHeight); }
   seq() { const a = []; for (let i = 0; i < this.SHOTS.length; i++) a.push(i); return a; }
   nb(i, d) { const q = this.seq(); let k = q.indexOf(i); if (k < 0) { k = 0; while (k < q.length && q[k] < i) k++; k--; } const n = k + d; return n >= 0 && n < q.length ? q[n] : -1; }
@@ -578,8 +577,6 @@ class Component extends DCLogic {
       setCanvas: (el) => { this.canvas = el; },
       setSpin: (el) => { this.spin = el; },
       setProg: (el) => { this.prog = el; },
-      setLoader: (el) => { this.loader = el; },
-      setPct: (el) => { this.pct = el; },
       setCursor: (el) => { this.cursor = el; },
       rail: N.map((n, i) => ({ name: n, cls: i === ch ? 'on' : '', go: () => this.go(i) })),
       chLabel: (ch < 9 ? '0' : '') + (ch + 1) + ' — ' + N[ch],
@@ -587,7 +584,6 @@ class Component extends DCLogic {
       ticks: this.seq().map((i) => ({ cls: i === ch ? 'on' : '' })),
       nextName: ch < last ? 'дальше: ' + N[ch + 1] : 'конец экспозиции',
       cursorLabel: cursorLabels[ch],
-      loadCls: s.ready ? 'done' : '',
       toTop: () => this.go(0),
       toWorks: () => this.go(2),
       toSeries: () => this.go(7),

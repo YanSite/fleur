@@ -2,7 +2,7 @@
   "name": "@demo/fleur",
   "version": "0.0.0",
   "private": true,
-  "description": "Демо-проект: статический сайт, публикуется GitHub Pages из зеркала YanSite/fleur. Управляется из монорепозитория Engine — см. projects/demo/README.md.",
+  "description": "Концепт «Флаувер»: статический сайт, публикуется из зеркала YanSite/fleur.",
   "scripts": {
     "dev": "serve -l 4104 --no-clipboard .",
     "build": "node ../../../tools/demo/check-static.mjs ."

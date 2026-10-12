@@ -1,5 +1,5 @@
-/* Flauver — lightweight template runtime */
-// minimal DC runtime for local testing
+/* Флаувер: шаблонизатор страницы. Разметка лежит в <template> внутри <x-dc>,
+   поэтому до запуска браузер её не показывает и не грузит из неё картинки. */
 class DCLogic{constructor(p){this.props=p||{};this.state={}}setState(o){Object.assign(this.state,typeof o==='function'?o(this.state):o);RT.render()}}
 const RT={};
 function get(sc,expr){expr=expr.trim();if(expr==='true')return true;if(expr==='false')return false;let v=sc;for(const k of expr.split('.')){if(v==null)return undefined;v=v[k]}return v}
@@ -32,8 +32,9 @@ function patchChildren(par,list){
     patchEl(k,v,false);patchChildren(k,v.c)});
   for(let i=list.length;i<kids.length;i++)par.removeChild(kids[i])}
 RT.boot=function(){
-  const x=document.querySelector('x-dc');const h=x.querySelector('helmet');[...h.children].forEach(c=>document.head.appendChild(c));h.remove();
-  const tpl=document.createElement('template');tpl.innerHTML=x.innerHTML;x.innerHTML='';RT.tpl=tpl.content;RT.root=x;
+  const x=document.querySelector('x-dc');const src=x.querySelector('template');
+  const tpl=document.createElement('template');tpl.innerHTML=(src||x).innerHTML;x.innerHTML='';
+  const h=tpl.content.querySelector('helmet');[...h.children].forEach(c=>document.head.appendChild(c));h.remove();RT.tpl=tpl.content;RT.root=x;
   const code=document.querySelector('script[data-dc-script]').textContent;
   const C=new Function('DCLogic',code+';return Component')(DCLogic);
   RT.c=new C({});RT.render();window.C=RT.c;if(RT.c.componentDidMount)RT.c.componentDidMount()};
