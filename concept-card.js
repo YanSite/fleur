@@ -48,7 +48,7 @@
 .on .card{transform:none}
 p,h2{margin:0}
 .over,.why,.hint{font-size:12px;line-height:1.45;color:var(--soft)}
-h2{font-size:24px;line-height:1.15;font-weight:500;padding-right:28px}
+h2{font-size:24px;line-height:1.15;font-weight:500;padding-right:28px;overflow-wrap:anywhere}
 .text{font-size:15px;line-height:1.5;color:var(--soft)}
 a{display:flex;align-items:center;justify-content:center;min-height:52px;padding:8px 20px;font-size:15px;text-align:center;text-decoration:none;border-radius:2px;color:var(--ink);border:1px solid var(--ink)}
 a.b1{background:var(--ink);color:var(--bg);margin-top:6px}
