@@ -25,14 +25,13 @@ concept-card{--cc-font:'Onest',sans-serif;--cc-top:12px;--cc-left:112px}
 html,body{margin:0;background:#EFEBE4}
 .film{position:relative;width:100%;height:100vh;overflow:hidden;overscroll-behavior:none;font-family:'Onest',sans-serif;--ink:#1F1D1B;--soft:#4E4A45;--line:rgba(31,29,27,.22);--paper:rgba(245,243,238,.92);--acc:#6B1E2E;color:var(--ink)}
 .film.dk{--ink:#F2ECE3;--soft:#C9BFB2;--line:rgba(242,236,227,.25);--paper:rgba(22,19,17,.9);--acc:#C98A92}
-.mono{font-family:'IBM Plex Mono',monospace}
 .stage{position:fixed;inset:0;background:#EFEBE4}
 .stage canvas{width:100%;height:100%;display:block}
 .ch{position:fixed;left:20px;right:20px;top:calc(var(--band, 54vh) + 16px);bottom:62px;overflow:hidden;display:flex;flex-direction:column;gap:12px;z-index:3;pointer-events:none;visibility:hidden;transition:visibility 0s .9s}
 .ch.on{visibility:visible;transition:none}
 .ch.mlo{top:calc(36vh + 14px);gap:10px}
 .ch .ia{pointer-events:auto}
-.meta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);opacity:0;transition:opacity .3s}
+.meta{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);opacity:0;transition:opacity .3s}
 .on .meta{opacity:1;transition:opacity .8s .1s}
 .h{margin:0;font-size:34px;font-weight:500;line-height:1;letter-spacing:-.04em;color:var(--ink)}
 .ln{display:block;overflow:hidden;padding-bottom:.06em}
@@ -41,10 +40,11 @@ html,body{margin:0;background:#EFEBE4}
 .on .ln:nth-child(2)>span{transition-delay:.27s}.on .ln:nth-child(3)>span{transition-delay:.39s}.on .ln:nth-child(4)>span{transition-delay:.51s}
 .sub{margin:0;font-size:14px;line-height:1.5;color:var(--soft);max-width:360px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
 .on .sub{opacity:1;transform:none;transition:opacity 1s .6s,transform 1s .6s cubic-bezier(.16,1,.3,1)}
-.pass{border-top:1px solid var(--ink);display:grid;grid-template-columns:96px minmax(0,1fr);font-size:13px;line-height:1.4;clip-path:inset(0 0 100% 0);transition:clip-path .3s cubic-bezier(.7,0,.84,0)}
+.pass{display:grid;grid-template-columns:96px minmax(0,1fr);font-size:13px;line-height:1.4;clip-path:inset(0 0 100% 0);transition:clip-path .3s cubic-bezier(.7,0,.84,0)}
 .on .pass{clip-path:inset(0 0 0 0);transition:clip-path 1.3s .55s cubic-bezier(.16,1,.3,1)}
-.pass dt{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);padding:7px 0;border-bottom:1px solid var(--line)}
+.pass dt{font-size:12px;color:var(--soft);padding:7px 0;border-bottom:1px solid var(--line)}
 .pass dd{margin:0;padding:6px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.pass dt:last-of-type,.pass dd:last-of-type{border-bottom:0}
 .btn{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;min-height:48px;padding:0 18px;border:0;background:var(--ink);color:#F5F3EE;font-family:'Onest',sans-serif;font-size:14px;font-weight:500;cursor:pointer;align-self:flex-start}
 .dk .btn{color:#161311}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
@@ -55,13 +55,13 @@ html,body{margin:0;background:#EFEBE4}
 .dk .hbtn{color:#161311}
 .prog{position:fixed;left:0;top:0;height:2px;background:var(--acc);z-index:7;width:0}
 .count{display:none}
-.arw{width:44px;height:44px;border:1px solid var(--line);background:transparent;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:14px;cursor:pointer;pointer-events:auto;transition:border-color .3s}
+.arw{width:44px;height:44px;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:14px;cursor:pointer;pointer-events:auto;transition:border-color .3s}
 .arw:hover{border-color:var(--ink)}
 .arw:disabled{opacity:.25;cursor:default}
-.mnav{position:fixed;right:14px;bottom:10px;display:flex;align-items:center;gap:8px;z-index:5;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--soft)}
+.mnav{position:fixed;right:14px;bottom:10px;display:flex;align-items:center;gap:8px;z-index:5;font-size:10px;color:var(--soft)}
 .mnav .arw{width:40px;height:40px}
 .ticks{position:fixed;left:20px;right:20px;bottom:22px;display:flex;align-items:center;gap:4px;z-index:5;pointer-events:none}
-.ticks .tc{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--soft);margin-right:10px;min-width:44px}
+.ticks .tc{font-size:11px;font-variant-numeric:tabular-nums;color:var(--soft);margin-right:10px;min-width:44px}
 .ticks i{flex:0 0 auto;width:8px;height:2px;background:var(--line);transition:width .9s cubic-bezier(.16,1,.3,1),background .6s}
 .ticks i.on{width:30px;background:var(--acc)}
 .nav0 .ticks{opacity:0}
@@ -71,20 +71,21 @@ html,body{margin:0;background:#EFEBE4}
 .film{--dg:0;--dgs:0}
 .ch.on{opacity:calc(1 - var(--dg) * .75)}
 .rail{display:none}
-.cue{position:fixed;left:20px;bottom:18px;display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);z-index:3;transition:opacity .6s;pointer-events:none}
+.cue{position:fixed;left:20px;bottom:18px;display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);z-index:3;transition:opacity .6s;pointer-events:none}
 .cue span{width:28px;height:1px;background:currentColor;transform-origin:left;animation:cue 2.2s infinite cubic-bezier(.6,0,.2,1)}
 @keyframes cue{0%{transform:scaleX(0)}55%{transform:scaleX(1);transform-origin:left}56%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
-.hlab{position:fixed;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);z-index:3;transition:opacity .8s;display:none}
+.hlab{position:fixed;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);z-index:3;transition:opacity .8s;display:none}
 .hs{position:fixed;left:0;top:0;z-index:4;pointer-events:none;opacity:0;transition:opacity .5s}
 .hs.on{opacity:1}
 .hs .dot{position:absolute;left:-6px;top:-6px;width:12px;height:12px;border-radius:50%;background:#F5F3EE;box-shadow:0 0 0 1px rgba(31,29,27,.5)}
 .hs .dot::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(245,243,238,.95);animation:ping 2.4s infinite}
 @keyframes ping{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.7);opacity:0}}
-.hs .lab{position:absolute;left:14px;top:-10px;white-space:nowrap;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:#F5F3EE;color:#1F1D1B;padding:3px 7px;clip-path:inset(0 100% 0 0);transition:clip-path .6s cubic-bezier(.16,1,.3,1)}
+.hs .lab{position:absolute;left:14px;top:-10px;white-space:nowrap;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:#F5F3EE;color:#1F1D1B;padding:3px 7px;clip-path:inset(0 100% 0 0);transition:clip-path .6s cubic-bezier(.16,1,.3,1)}
 .hs.on .lab{clip-path:inset(0 0 0 0)}
 .scrub{font-size:24px;font-weight:500;line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin:0;opacity:0;transform:translateY(14px);transition:opacity .3s,transform .3s}
 .on .scrub{opacity:1;transform:none;transition:opacity 1.1s .3s,transform 1.2s .3s cubic-bezier(.16,1,.3,1)}
-.steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.steps{list-style:none;margin:0;padding:0}
+.steps li:last-child{border-bottom:0}
 .steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:4px 10px;padding:9px 0;border-bottom:1px solid var(--line);opacity:.4;transition:opacity .5s}
 .steps li.on{opacity:1}
 .steps b{font-weight:500;font-size:16px;letter-spacing:-.02em}
@@ -98,14 +99,14 @@ html,body{margin:0;background:#EFEBE4}
 .spin{position:absolute;left:0;top:0;transform-style:preserve-3d;--rz:62vw}
 .card{position:absolute;--cw:min(42vw,28vh);left:calc(var(--cw) / -2);top:calc(var(--cw) * -0.625);width:var(--cw);aspect-ratio:4/5;backface-visibility:hidden;box-shadow:0 30px 60px rgba(0,0,0,.5)}
 .card img{width:100%;height:100%;object-fit:cover;display:block}
-.card i{position:absolute;left:8px;bottom:8px;font-family:'IBM Plex Mono',monospace;font-style:normal;font-size:9px;letter-spacing:.08em;color:#F2ECE3;text-transform:uppercase}
+.card i{position:absolute;left:8px;right:8px;bottom:8px;font-style:normal;font-size:10px;line-height:1.25;color:#F2ECE3}
 .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
-.fld{display:flex;flex-direction:column;gap:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.fld{display:flex;flex-direction:column;gap:3px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
 .fld.w{grid-column:span 2}
 .fld input,.fld select{height:40px;border:0;border-bottom:1px solid var(--ink);background:transparent;font-family:'Onest',sans-serif;font-size:15px;color:var(--ink);padding:0;border-radius:0}
 .fld select option{color:#1F1D1B}
 .quote{margin:0;font-size:34px;font-weight:500;line-height:1.02;letter-spacing:-.04em}
-.cursor{position:fixed;left:0;top:0;transform:translate(-300px,-300px);width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;border:1px solid #F5F3EE;mix-blend-mode:difference;z-index:8;pointer-events:none;display:none;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#F5F3EE;transition:width .3s,height .3s,margin .3s}
+.cursor{position:fixed;left:0;top:0;transform:translate(-300px,-300px);width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;border:1px solid #F5F3EE;mix-blend-mode:difference;z-index:8;pointer-events:none;display:none;align-items:center;justify-content:center;font-size:11px;color:#F5F3EE;transition:width .3s,height .3s,margin .3s}
 
 .ch.hero{top:84px;bottom:auto;gap:14px;overflow:visible}
 @media (max-height:720px){.steps li{padding:6px 0}.steps b{font-size:15px}.ch{gap:9px}.btn{min-height:44px}}
@@ -124,21 +125,21 @@ html,body{margin:0;background:#EFEBE4}
 .fx-side .pass,.fx-side .steps{transform:translateX(-14px);opacity:.0;transition:transform .3s,opacity .3s,clip-path .3s}
 .on.fx-side .pass,.on.fx-side .steps{transform:none;opacity:1;transition:transform 1.2s .5s cubic-bezier(.16,1,.3,1),opacity 1s .5s,clip-path 1.3s .55s cubic-bezier(.16,1,.3,1)}
 .ch.on:not(.hero){translate:0 calc(var(--dgs) * -36px)}
-@media (max-height:720px){.ch .opt{display:none}.h{font-size:30px}.ch.hero .h{font-size:34px}.hpass{display:none}}
+@media (max-height:720px){.ch .opt{display:none}.pass dt:nth-last-of-type(2),.pass dd:nth-last-of-type(2){border-bottom:0}.h{font-size:30px}.ch.hero .h{font-size:34px}.hpass{display:none}}
 @media (max-height:600px){.hpass{display:none}.ch .sub{display:none}}
 .ch.hero .h{font-size:40px;letter-spacing:-.035em;max-width:330px}
-.hpass{position:fixed;right:20px;top:300px;width:170px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.55;color:var(--soft);z-index:3;opacity:0;transform:translateY(8px);transition:opacity .6s,transform .6s}
+.hpass{position:fixed;right:20px;top:300px;width:170px;text-align:right;font-size:10px;line-height:1.55;color:var(--soft);z-index:3;opacity:0;transform:translateY(8px);transition:opacity .6s,transform .6s}
 .hpass.on{opacity:1;transform:none;transition:opacity 1s .5s,transform 1s .5s cubic-bezier(.16,1,.3,1)}
 .hpass .ttl{font-family:'Onest',sans-serif;font-size:15px;line-height:1.2;color:var(--ink);margin:3px 0}
 .hbar{position:fixed;left:20px;right:20px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:3;opacity:0;visibility:hidden;transition:opacity .6s,visibility 0s .6s}
 .hbar.on{opacity:1;visibility:visible;transition:opacity 1s .6s}
-.hscroll{display:flex;align-items:center;gap:12px;min-height:36px;border:0;background:none;padding:0;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer}
+.hscroll{display:flex;align-items:center;gap:12px;min-height:36px;border:0;background:none;padding:0;pointer-events:none;font-size:12px;color:var(--ink);cursor:pointer}
 .hscroll .ln2{flex:1;height:1px;background:currentColor;position:relative;max-width:none}
 .hscroll .ln2::after{content:'';position:absolute;left:0;top:-5px;width:11px;height:11px;border-radius:50%;background:var(--acc);animation:drift 3.2s infinite cubic-bezier(.6,0,.2,1)}
 @keyframes drift{0%{left:0}70%{left:calc(100% - 11px)}100%{left:calc(100% - 11px);opacity:0}}
 .hcta{width:100%;min-height:52px}
 .hnav{display:none}
-.hnav button{min-height:44px;border:0;background:none;padding:0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:inherit;cursor:pointer}
+.hnav button{min-height:44px;border:0;background:none;padding:0;font-size:12px;color:inherit;cursor:pointer}
 .nav0 .hlabel{display:none !important}
 .film:not(.nav0) .hnav{display:none !important}
 @media (min-width:900px) and (min-aspect-ratio:19/20), (max-height:519px) and (min-aspect-ratio:4/3){
@@ -163,13 +164,13 @@ html,body{margin:0;background:#EFEBE4}
   .pass{grid-template-columns:120px minmax(0,1fr);font-size:14px}
   .hdr{padding:24px 48px 0}
   .logo{font-size:22px}
-  .hlabel{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .hlabel{display:block;font-size:13px}
   .hbtn{min-height:44px;padding:0 20px;font-size:14px}
-  .count{display:flex;align-items:center;gap:14px;position:fixed;left:auto;right:64px;bottom:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--soft);z-index:3;transition:color .8s}
-  .count .nxt{margin-left:6px;text-transform:uppercase}
+  .count{display:flex;align-items:center;gap:14px;position:fixed;left:auto;right:64px;bottom:24px;font-size:11px;font-variant-numeric:tabular-nums;color:var(--soft);z-index:3;transition:color .8s}
+  .count .nxt{margin-left:6px}
   .ticks{display:none}
   .rail{display:flex;position:fixed;right:28px;top:50%;transform:translateY(-50%);flex-direction:column;align-items:flex-end;gap:0;z-index:5}
-  .rail button{display:flex;align-items:center;gap:10px;min-height:22px;border:0;background:none;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:0;opacity:.35;transition:opacity .4s,color .8s}
+  .rail button{display:flex;align-items:center;gap:10px;min-height:22px;border:0;background:none;color:var(--ink);font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:0;opacity:.35;transition:opacity .4s,color .8s}
   .rail button span{display:none}
   .rail button.on{opacity:1}
   .rail button::after{content:'';width:14px;height:1px;background:currentColor;transition:width .4s}
@@ -222,27 +223,27 @@ html,body{margin:0;background:#EFEBE4}
   <div class="stage"><canvas ref="{{setCanvas}}" role="img" aria-label="Фотографии авторских работ, сменяющиеся при прокрутке"></canvas></div>
 
   <section class="ch hero {{c.k0}}" aria-label="Экспозиция">
-    <div class="meta">Авторская флористика / Москва</div>
+    <div class="meta">Авторская флористика, Москва</div>
     <h1 class="h"><span class="ln"><span>Каждую работу</span></span><span class="ln"><span>хочется</span></span><span class="ln"><span>рассматривать.</span></span></h1>
   </section>
   <aside class="hpass {{c.k0}}" aria-label="Работа на обложке">
     <div>На обложке</div>
     <div class="ttl">«Утро, которое не торопится»</div>
     <div>Серия: светлая</div>
-    <div>В экспозиции: 4 работы · 2 серии</div>
+    <div>В экспозиции 4 работы, 2 серии</div>
   </aside>
   <div class="hbar {{c.k0}}">
-    <div class="hscroll"><span class="ln2"></span>Листайте — одна сцена за свайп</div>
-    <button class="btn hcta" onClick="{{toForm}}"><span>Связаться</span><span aria-hidden="true">→</span></button>
+    <div class="hscroll"><span class="ln2"></span>Листайте</div>
+    <button class="btn hcta" onClick="{{toForm}}"><span>Связаться</span></button>
   </div>
 
   <section class="ch {{c.k1}} fx-blur" aria-label="Манифест">
     <div class="meta">Манифест</div>
-    <p class="scrub">Это не букет к поводу. Это работа: у неё есть замысел, название и место в серии. Её собирают как скульптуру — из формы, цвета и пустоты.</p>
+    <p class="scrub">Мы собираем работы с замыслом, названием и местом в серии. Собираем их как скульптуру: из формы, цвета и пустоты.</p>
   </section>
 
-  <section class="ch R {{c.k2}} fx-rise" aria-label="Работа 01">
-    <div class="meta">Работа № 01 · светлая серия</div>
+  <section class="ch R {{c.k2}} fx-rise" aria-label="Работа «Лёгкость»">
+    <div class="meta">Светлая серия</div>
     <h2 class="h"><span class="ln"><span>«Лёгкость»</span></span></h2>
     <dl class="pass" style="margin: 0">
       <dt>Замысел</dt><dd>Асимметрия и воздух: ветка жасмина уводит взгляд, плотный центр держит.</dd>
@@ -251,23 +252,23 @@ html,body{margin:0;background:#EFEBE4}
     </dl>
   </section>
 
-  <section class="ch R {{c.k3}} fx-side" aria-label="Работа 02">
-    <div class="meta">Работа № 02 · светлая серия</div>
+  <section class="ch R {{c.k3}} fx-side" aria-label="Работа «Три розы и олива»">
+    <div class="meta">Светлая серия</div>
     <h2 class="h"><span class="ln"><span>«Три розы</span></span><span class="ln"><span>и олива»</span></span></h2>
     <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Минимум элементов — максимум внимания к каждому.</dd>
+      <dt>Замысел</dt><dd>Здесь всего три розы и ветка оливы.</dd>
       <dt>Состав</dt><dd>Три садовые розы, ветка оливы</dd>
-      <dt class="opt">Подача</dt><dd class="opt">Стекло и вода — стебли тоже часть работы</dd>
+      <dt class="opt">Подача</dt><dd class="opt">Стекло и вода: стебли тоже часть работы</dd>
     </dl>
   </section>
 
-  <section class="ch {{c.k4}} fx-blur" aria-label="Работа 03">
-    <div class="meta">Работа № 03 · светлая серия</div>
+  <section class="ch {{c.k4}} fx-blur" aria-label="Работа «Нежность»">
+    <div class="meta">Светлая серия</div>
     <h2 class="h"><span class="ln"><span>«Нежность»</span></span></h2>
     <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Одна большая роза в центре — и тишина вокруг неё.</dd>
+      <dt>Замысел</dt><dd>Одна большая роза в центре, остальное вокруг неё.</dd>
       <dt>Состав</dt><dd>Роза, ранункулюсы, душистый горошек, олива</dd>
-      <dt class="opt">Повод</dt><dd class="opt">Подарок, после которого хочется остаться рядом</dd>
+      <dt class="opt">Повод</dt><dd class="opt">Подарок</dd>
     </dl>
   </section>
 
@@ -276,7 +277,7 @@ html,body{margin:0;background:#EFEBE4}
     <h2 class="h"><span class="ln"><span>От разговора</span></span><span class="ln"><span>до коробки.</span></span></h2>
     <ol class="steps">
       <sc-for list="{{steps}}" as="st">
-        <li class="{{st.cls}}"><span class="mono" style="font-size: 11px; padding-top: 4px">{{st.n}}</span><b>{{st.t}}</b><p>{{st.d}}</p></li>
+        <li class="{{st.cls}}"><span style="font-size: 11px; padding-top: 4px">{{st.n}}</span><b>{{st.t}}</b><p>{{st.d}}</p></li>
       </sc-for>
     </ol>
   </section>
@@ -284,20 +285,20 @@ html,body{margin:0;background:#EFEBE4}
   <section class="ch R {{c.k6}} fx-rise" aria-label="Повод">
     <div class="meta">Для чего</div>
     <h2 class="h"><span class="ln"><span>Для стола,</span></span><span class="ln"><span>за которым соберутся.</span></span></h2>
-    <p class="sub">Подарок, ужин, свадьба, дом или событие — работу собирают под повод и место, где она будет стоять.</p>
+    <p class="sub">Подарок, ужин, свадьба, дом или событие: работу собирают под повод и место, где она будет стоять.</p>
   </section>
 
-  <section class="ch zal {{c.k7}} fx-blur" aria-label="Зал 2">
-    <div class="meta">Зал 2 · тёмная серия</div>
-    <h2 class="h"><span class="ln"><span>У каждой серии</span></span><span class="ln"><span>свой свет.</span></span></h2>
-    <p class="sub">Светлая — про утро и воздух. Тёмная — про бархат, глубину и вечер.</p>
+  <section class="ch zal {{c.k7}} fx-blur" aria-label="Тёмная серия">
+    <div class="meta">Тёмная серия</div>
+    <h2 class="h"><span class="ln"><span>У серий</span></span><span class="ln"><span>разный свет.</span></span></h2>
+    <p class="sub">В светлой серии утренние, воздушные работы, в тёмной — вечерние, бархатные.</p>
   </section>
 
-  <section class="ch R {{c.k8}} fx-side" aria-label="Работа 04">
-    <div class="meta">Работа № 04 · тёмная серия</div>
+  <section class="ch R {{c.k8}} fx-side" aria-label="Работа «Тёмный сад»">
+    <div class="meta">Тёмная серия</div>
     <h2 class="h"><span class="ln"><span>«Тёмный сад»</span></span></h2>
     <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Бархат рядом с холодом: тёплые розы и почти чёрные анемоны держат друг друга.</dd>
+      <dt>Замысел</dt><dd>Бархат рядом с холодом: тёплые розы и почти чёрные анемоны в одной работе.</dd>
       <dt>Состав</dt><dd>Розы цвета вина, анемоны, эвкалипт с семенами</dd>
       <dt class="opt">Подача</dt><dd class="opt">Старое серебро на ножке</dd>
     </dl>
@@ -305,12 +306,12 @@ html,body{margin:0;background:#EFEBE4}
 
   <section class="ch {{c.k9}} fx-blur" aria-label="Замысел">
     <div class="meta">Замысел</div>
-    <p class="quote"><span class="ln"><span>Работа начинается</span></span><span class="ln"><span>не с цветов,</span></span><span class="ln"><span>а с места, где</span></span><span class="ln"><span>она будет стоять.</span></span></p>
+    <p class="quote"><span class="ln"><span>Работа начинается</span></span><span class="ln"><span>с места, где</span></span><span class="ln"><span>она будет стоять.</span></span></p>
   </section>
 
   <section class="ch R {{c.k10}} fx-rise" aria-label="Детали">
     <div class="meta">Детали</div>
-    <p class="scrub">Мастерство — в деталях, которые видно, только если смотреть внимательно.</p>
+    <p class="scrub">Детали работы лучше всего видно вблизи.</p>
   </section>
 
   <section class="ch R {{c.k11}} fx-side" aria-label="Контакты">
@@ -321,14 +322,14 @@ html,body{margin:0;background:#EFEBE4}
 
   <div class="ring {{ringOn}}" aria-hidden="true">
     <div class="spin" ref="{{setSpin}}">
-      <div class="card" style="transform: rotateY(0deg) translateZ(var(--rz))"><img src="{{th.bouquet-dark-window}}" alt="" decoding="async"><i>тёмная · пионы у окна</i></div>
-      <div class="card" style="transform: rotateY(45deg) translateZ(var(--rz))"><img src="{{th.anemones}}" alt="" decoding="async"><i>тёмная · анемоны</i></div>
-      <div class="card" style="transform: rotateY(90deg) translateZ(var(--rz))"><img src="{{th.dahlias}}" alt="" decoding="async"><i>тёмная · георгины</i></div>
-      <div class="card" style="transform: rotateY(135deg) translateZ(var(--rz))"><img src="{{th.petal-detail}}" alt="" decoding="async"><i>деталь</i></div>
-      <div class="card" style="transform: rotateY(180deg) translateZ(var(--rz))"><img src="{{th.peony-dark}}" alt="" decoding="async"><i>тёмная · пион</i></div>
-      <div class="card" style="transform: rotateY(225deg) translateZ(var(--rz))"><img src="{{th.tenderness}}" alt="" decoding="async"><i>светлая · нежность</i></div>
-      <div class="card" style="transform: rotateY(270deg) translateZ(var(--rz))"><img src="{{th.three-roses}}" alt="" decoding="async"><i>светлая · три розы</i></div>
-      <div class="card" style="transform: rotateY(315deg) translateZ(var(--rz))"><img src="{{th.lightness}}" alt="" decoding="async"><i>светлая · лёгкость</i></div>
+      <div class="card" style="transform: rotateY(0deg) translateZ(var(--rz))"><img src="{{th.bouquet-dark-window}}" alt="" decoding="async"><i>Пионы у окна, тёмная серия</i></div>
+      <div class="card" style="transform: rotateY(45deg) translateZ(var(--rz))"><img src="{{th.anemones}}" alt="" decoding="async"><i>Анемоны, тёмная серия</i></div>
+      <div class="card" style="transform: rotateY(90deg) translateZ(var(--rz))"><img src="{{th.dahlias}}" alt="" decoding="async"><i>Георгины, тёмная серия</i></div>
+      <div class="card" style="transform: rotateY(135deg) translateZ(var(--rz))"><img src="{{th.petal-detail}}" alt="" decoding="async"><i>Деталь</i></div>
+      <div class="card" style="transform: rotateY(180deg) translateZ(var(--rz))"><img src="{{th.peony-dark}}" alt="" decoding="async"><i>Пион, тёмная серия</i></div>
+      <div class="card" style="transform: rotateY(225deg) translateZ(var(--rz))"><img src="{{th.tenderness}}" alt="" decoding="async"><i>«Нежность», светлая серия</i></div>
+      <div class="card" style="transform: rotateY(270deg) translateZ(var(--rz))"><img src="{{th.three-roses}}" alt="" decoding="async"><i>«Три розы и олива», светлая серия</i></div>
+      <div class="card" style="transform: rotateY(315deg) translateZ(var(--rz))"><img src="{{th.lightness}}" alt="" decoding="async"><i>«Лёгкость», светлая серия</i></div>
     </div>
   </div>
 
@@ -375,7 +376,7 @@ class Component extends DCLogic {
     ];
     this.T = 0.5;
     this.SHOTS.forEach((sh) => { if (sh.mz0 !== undefined) { sh.z0 = sh.mz0; sh.z1 = sh.mz1; } if (sh.mr1 !== undefined) { sh.r0 = sh.mr0; sh.r1 = sh.mr1; } });
-    this.NAMES = ['Экспозиция', 'Манифест', 'Работа № 01', 'Работа № 02', 'Работа № 03', 'Процесс', 'Повод', 'Зал 2', 'Работа № 04', 'Замысел', 'Детали', 'Контакты'];
+    this.NAMES = ['Экспозиция', 'Манифест', '«Лёгкость»', '«Три розы и олива»', '«Нежность»', 'Процесс', 'Повод', 'Тёмная серия', '«Тёмный сад»', 'Замысел', 'Детали', 'Контакты'];
     this.y = 0; this.tw = null; this.restAt = 0; this.lockUntil = 0; this.lastWheel = 0; this.consumed = false; this.acc = 0; this.arrivedAt = 0;
     this.wh = []; this.queue = 0; this.lastTrig = 0; this.dragT = 0; this.dragOff = 0; this.lastNow = 0; this.dgLast = '';
   }
@@ -559,11 +560,11 @@ class Component extends DCLogic {
     const ch = s.cur;
     const stepsDef = [
       ['Разговор', 'Повод, человек, место, настроение. Флорист слушает и задаёт вопросы.'],
-      ['Замысел', 'Палитра, форма и серия. Иногда — эскиз, всегда — название.'],
-      ['Материал', 'Сезонные цветы, ветки, керамика, стекло, лён — под замысел, а не под прайс.'],
-      ['Сборка и коробка', 'Работу собирают как скульптуру и везут в коробке мастерской.']
+      ['Замысел', 'Палитра, форма и серия. У работы всегда есть название, иногда и эскиз.'],
+      ['Материал', 'Сезонные цветы, ветки, керамику, стекло и лён подбираем под замысел работы.'],
+      ['Сборка и коробка', 'Работу собирают и везут в коробке мастерской.']
     ];
-    const cursorLabels = ['дальше', 'смотреть', 'ближе', 'смотреть', 'смотреть', 'процесс', 'повод', 'зал 2', 'смотреть', 'замысел', 'деталь', 'заявка'];
+    const cursorLabels = ['дальше', 'смотреть', 'ближе', 'смотреть', 'смотреть', 'процесс', 'повод', 'серия', 'смотреть', 'замысел', 'деталь', 'заявка'];
     return {
       toneCls: s.tch >= 7 ? 'dk' : '',
       navCls: s.cur === 0 && s.ch !== -1 ? 'nav0' : '',
@@ -572,15 +573,15 @@ class Component extends DCLogic {
       // Миниатюры кольца галереи (глава 8): src появляется, когда первый экран готов, —
       // до этого они не конкурируют с ним за сеть.
       th: s.ready ? { 'bouquet-dark-window': 'img/t/bouquet-dark-window.webp', anemones: 'img/t/anemones.webp', dahlias: 'img/t/dahlias.webp', 'petal-detail': 'img/t/petal-detail.webp', 'peony-dark': 'img/t/peony-dark.webp', tenderness: 'img/t/tenderness.webp', 'three-roses': 'img/t/three-roses.webp', lightness: 'img/t/lightness.webp' } : {},
-      steps: stepsDef.map((d, i) => ({ n: '0' + (i + 1), t: d[0], d: d[1], cls: i === s.step ? 'on' : '' })),
+      steps: stepsDef.map((d, i) => ({ n: String(i + 1), t: d[0], d: d[1], cls: i === s.step ? 'on' : '' })),
       setRoot: (el) => { this.root = el; if (el) this.applyBand(); },
       setCanvas: (el) => { this.canvas = el; },
       setSpin: (el) => { this.spin = el; },
       setProg: (el) => { this.prog = el; },
       setCursor: (el) => { this.cursor = el; },
       rail: N.map((n, i) => ({ name: n, cls: i === ch ? 'on' : '', go: () => this.go(i) })),
-      chLabel: (ch < 9 ? '0' : '') + (ch + 1) + ' — ' + N[ch],
-      counter: (() => { const q = this.seq(), k = Math.max(0, q.indexOf(ch)) + 1; return (k < 10 ? '0' : '') + k + ' / ' + q.length; })(),
+      chLabel: N[ch],
+      counter: (() => { const q = this.seq(), k = Math.max(0, q.indexOf(ch)) + 1; return String(k).padStart(2, '\u2007') + ' / ' + q.length; })(),
       ticks: this.seq().map((i) => ({ cls: i === ch ? 'on' : '' })),
       nextName: ch < last ? 'дальше: ' + N[ch + 1] : 'конец экспозиции',
       cursorLabel: cursorLabels[ch],
