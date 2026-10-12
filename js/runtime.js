@@ -11,7 +11,8 @@ function build(tpl,sc,out){
     if(tag==='sc-for'){const list=get(sc,n.getAttribute('list').slice(2,-2))||[];const as=n.getAttribute('as');list.forEach(it=>build(n,Object.assign(Object.create(sc),{[as]:it}),out));continue}
     if(tag==='sc-if'){if(get(sc,n.getAttribute('value').slice(2,-2)))build(n,sc,out);continue}
     const node={t:tag,a:{},ev:{},ref:null,c:[]};
-    for(const at of n.attributes){const m=at.value.match(/^\{\{(.*?)\}\}$/);
+    // Атрибут с приставкой x- (x-src) в разметке записан так, чтобы браузер не запросил «{{…}}» как адрес.
+    for(const raw of n.attributes){const at={name:raw.name.replace(/^x-/,''),value:raw.value};const m=at.value.match(/^\{\{(.*?)\}\}$/);
       if(m){const v=get(sc,m[1]);if(at.name==='ref'){node.ref=v;continue}if(at.name.startsWith('on')){node.ev[at.name.slice(2).toLowerCase()]=v;continue}
         if(v===false||v==null)continue;if(v===true){node.a[at.name]='';continue}node.a[at.name]=String(v);continue}
       node.a[at.name]=at.value.replace(/\{\{(.*?)\}\}/g,(mm,e)=>{const x=get(sc,e);return x==null?'':x})}
