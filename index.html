@@ -373,6 +373,8 @@ class Component extends DCLogic {
       { img: 2, s0: 18.2, s1: 20.2, z0: 1.05, z1: 1.0, f0: [0.45, 0.62], f1: [0.45, 0.6], tone: 0, beam: 0.5, win: F, mwin: [0, 0.64, 1, 0.92], tr: 1, win0: [0.14, 0.2, 0.46, 0.8], side: 5, mside: 4, mtr: 1, mz0: 1.0, mz1: 1.1, mf0: [0.4, 0.6], mf1: [0.48, 0.58], mwin0: [0.14, 0.2, 0.46, 0.8] }
     ];
     this.T = 0.5;
+    // Телефон: фотографии сменяются мягким наплывом одна в другую, без вспышек, шторок и раскрытия из окна.
+    this.SHOTS.forEach((sh) => { sh.mtr = 5; delete sh.mwin0; });
     this.SHOTS.forEach((sh) => { if (sh.mz0 !== undefined) { sh.z0 = sh.mz0; sh.z1 = sh.mz1; } if (sh.mr1 !== undefined) { sh.r0 = sh.mr0; sh.r1 = sh.mr1; } });
     this.NAMES = ['Экспозиция', 'Манифест', '«Лёгкость»', '«Три розы и олива»', '«Нежность»', 'Процесс', 'Повод', 'Тёмная серия', '«Тёмный сад»', 'Замысел', 'Детали', 'Контакты'];
     this.y = 0; this.tw = null; this.restAt = 0; this.lockUntil = 0; this.lastWheel = 0; this.consumed = false; this.acc = 0; this.arrivedAt = 0;
