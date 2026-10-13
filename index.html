@@ -47,7 +47,7 @@ html,body{margin:0;background:#EFEBE4}
 .on .meta{opacity:1;transition:opacity .8s .1s}
 .h{margin:0;font-size:34px;font-weight:500;line-height:1;letter-spacing:-.04em;color:var(--ink)}
 .ln{display:block;overflow:hidden;padding-bottom:.06em}
-.ln>span{display:inline-block;transform:translateY(108%);transition:transform .6s cubic-bezier(.5,0,.75,0)}
+.ln>span{display:inline-block;transform:translateY(108%);transition:transform .4s cubic-bezier(.5,0,.75,0)}
 .on .ln>span{transform:none;transition:transform 1.2s .15s cubic-bezier(.16,1,.3,1)}
 .on .ln:nth-child(2)>span{transition-delay:.27s}.on .ln:nth-child(3)>span{transition-delay:.39s}.on .ln:nth-child(4)>span{transition-delay:.51s}
 .idea{margin:0;font-size:15px;line-height:1.45;color:var(--ink);max-width:400px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
@@ -100,11 +100,9 @@ html,body{margin:0;background:#EFEBE4}
 .scrub{font-size:24px;font-weight:500;line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin:0;opacity:0;transform:translateY(14px);transition:opacity .3s,transform .3s}
 .on .scrub{opacity:1;transform:none;transition:opacity 1.1s .3s,transform 1.2s .3s cubic-bezier(.16,1,.3,1)}
 .steps{list-style:none;margin:0;padding:0}
-.steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:4px 10px;padding:9px 0;opacity:.4;transition:opacity .5s}
-.steps li.on{opacity:1}
+.steps li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;padding:7px 0}
 .steps b{font-weight:500;font-size:16px;letter-spacing:-.02em}
-.steps p{grid-column:2;margin:0;font-size:13px;line-height:1.45;color:var(--soft);max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.16,1,.3,1)}
-.steps li.on p{max-height:80px}
+.steps p{grid-column:2;margin:0;font-size:13px;line-height:1.4;color:var(--soft)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{min-height:44px;padding:0 14px;border:1px solid var(--ink);background:rgba(245,243,238,.55);color:var(--ink);font-family:'Onest',sans-serif;font-size:14px;cursor:pointer;transition:background .3s,color .3s}
 .chip.on{background:var(--ink);color:#F5F3EE}
@@ -118,14 +116,12 @@ html,body{margin:0;background:#EFEBE4}
 .cursor{position:fixed;left:0;top:0;transform:translate(-300px,-300px);width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;border:1px solid #F5F3EE;mix-blend-mode:difference;z-index:8;pointer-events:none;display:none;align-items:center;justify-content:center;font-size:11px;color:#F5F3EE;transition:width .3s,height .3s,margin .3s}
 
 .ch.hero{top:84px;bottom:auto;gap:14px;overflow:visible}
-@media (max-height:720px){.steps li{padding:6px 0}.steps b{font-size:15px}.ch{gap:9px}.btn{min-height:44px}}
+@media (max-height:720px){.steps li{padding:4px 0}.steps b{font-size:15px}.steps p{font-size:12px;line-height:1.35}.ch{gap:9px}.btn{min-height:44px}}
 .ch:not(.hero){top:auto;bottom:58px;max-height:64vh;overflow:visible}
 .ch.zal{top:auto}
 .ch:not(.hero) .h,.ch:not(.hero) .scrub,.ch:not(.hero) .quote{text-shadow:0 0 22px rgba(245,243,238,.55)}
 .dk .ch:not(.hero) .h,.dk .ch:not(.hero) .scrub,.dk .ch:not(.hero) .quote,.dk .ch:not(.hero) .sub,.dk .ch:not(.hero) .idea,.dk .ch:not(.hero) .made{text-shadow:0 1px 18px rgba(0,0,0,.6)}
 .fx-side .ln>span{transform:translateX(-104%)}
-.ch:not(.hero) .steps li{opacity:.55}
-.ch:not(.hero) .steps li.on{opacity:1}
 .fx-blur .ln>span{transform:translateY(24%) scale(1.05);filter:blur(10px);opacity:0;transition:transform .35s,filter .35s,opacity .35s}
 .on.fx-side .ln>span{transform:none}
 .on.fx-blur .ln>span{transform:none;filter:none;opacity:1;transition:transform 1.4s .15s cubic-bezier(.16,1,.3,1),filter 1.2s .15s,opacity 1s .15s}
@@ -218,15 +214,16 @@ html,body{margin:0;background:#EFEBE4}
 }
 @media (hover:hover) and (pointer:fine) and (min-width:900px) and (min-aspect-ratio:19/20){.cursor{display:flex}}
 @media (max-width:899px), (max-aspect-ratio:19/20){
-  .on .meta{transition:opacity .9s}
-  .on .ln>span{transition:transform 1.15s cubic-bezier(.16,1,.3,1)}
-  .on .idea{transition:opacity 1s .3s,transform 1s .3s cubic-bezier(.16,1,.3,1)}
-  .on .made{transition:opacity 1s .45s,transform 1s .45s cubic-bezier(.16,1,.3,1)}
+  .on .meta{transition:opacity .5s}
+  .on .ln>span{transition:transform .7s cubic-bezier(.16,1,.3,1)}
+  .on .idea{transition:opacity .6s .1s,transform .6s .1s cubic-bezier(.16,1,.3,1)}
+  .on .made{transition:opacity .6s .16s,transform .6s .16s cubic-bezier(.16,1,.3,1)}
   .on .ln:nth-child(2)>span{transition-delay:.07s}.on .ln:nth-child(3)>span{transition-delay:.14s}.on .ln:nth-child(4)>span{transition-delay:.21s}
-  .on.fx-blur .ln>span{transition:transform 1.15s cubic-bezier(.16,1,.3,1),filter 1s,opacity .9s}
-  .on .scrub,.on.fx-blur .scrub{transition:opacity 1s .1s,transform 1.15s .1s cubic-bezier(.16,1,.3,1),filter 1s .1s}
-  .on .sub{transition:opacity 1s .3s,transform 1s .3s cubic-bezier(.16,1,.3,1)}
+  .on.fx-blur .ln>span{transition:transform .7s cubic-bezier(.16,1,.3,1),filter .6s,opacity .5s}
+  .on .scrub,.on.fx-blur .scrub{transition:opacity .6s .05s,transform .7s .05s cubic-bezier(.16,1,.3,1),filter .6s .05s}
+  .on .sub{transition:opacity .6s .12s,transform .6s .12s cubic-bezier(.16,1,.3,1)}
   .on .pass{transition:clip-path .9s .2s cubic-bezier(.16,1,.3,1)}
+  .on.fx-side .steps{transition:transform .6s .1s cubic-bezier(.16,1,.3,1),opacity .5s .1s}
   .on.fx-side .pass,.on.fx-side .steps{transition:transform .8s .2s cubic-bezier(.16,1,.3,1),opacity .7s .2s,clip-path .9s .2s cubic-bezier(.16,1,.3,1)}
 }
 @media (prefers-reduced-motion:reduce){.idea,.made{transform:none}.ln>span,.on .ln>span{transform:none;transition:none}.pass{clip-path:none}.cue span{animation:none}}
@@ -512,9 +509,9 @@ class Component extends DCLogic {
     if (n === this.state.cur && !this.tw) return;
     const from = this.y, to = this.rest(n), dist = Math.abs(n - this.state.cur);
     const port = this.isPort();
-    const dur = this.reduce ? 500 : (port ? Math.min(3200, 2100 + (dist - 1) * 200) : Math.min(3400, 2000 + (dist - 1) * 220));
+    const dur = this.reduce ? 500 : (port ? Math.min(2600, 1700 + (dist - 1) * 180) : Math.min(3400, 2000 + (dist - 1) * 220));
     this.dragT = 0; this.dragOff = 0;
-    this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false, showAt: port ? 0.5 : 0.62 };
+    this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false, showAt: port ? 0.34 : 0.62 };
     this.setState({ ch: -1, cur: n, step: 0 });
     window.dispatchEvent(new CustomEvent('concept:final', { detail: n === this.SHOTS.length - 1 }));
   }
@@ -545,7 +542,6 @@ class Component extends DCLogic {
     this.eng.setScroll(this.y);
     if (this.prog) this.prog.style.width = ((this.y / this.SHOTS[this.SHOTS.length - 1].s0) * 100).toFixed(2) + '%';
     const ch = this.state.ch;
-    if (ch === 5) { const st = Math.max(0, Math.min(3, Math.floor((now - this.arrivedAt - 900) / 1700))); if (st !== this.state.step) this.setState({ step: st }); }
     if (this.spin) {
       const wide = !this.portrait(window.innerWidth, window.innerHeight);
       const rz = wide ? 'min(26vw, 44vh)' : 'min(52vw, 34vh)';
