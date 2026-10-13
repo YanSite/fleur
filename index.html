@@ -43,13 +43,17 @@ html,body{margin:0;background:#EFEBE4}
 .ch.on{visibility:visible;transition:none}
 .ch.mlo{top:calc(36vh + 14px);gap:10px}
 .ch .ia{pointer-events:auto}
-.meta{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);opacity:0;transition:opacity .3s}
+.meta{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);opacity:0;transition:opacity .5s}
 .on .meta{opacity:1;transition:opacity .8s .1s}
 .h{margin:0;font-size:34px;font-weight:500;line-height:1;letter-spacing:-.04em;color:var(--ink)}
 .ln{display:block;overflow:hidden;padding-bottom:.06em}
-.ln>span{display:inline-block;transform:translateY(108%);transition:transform .35s cubic-bezier(.7,0,.84,0)}
+.ln>span{display:inline-block;transform:translateY(108%);transition:transform .6s cubic-bezier(.5,0,.75,0)}
 .on .ln>span{transform:none;transition:transform 1.2s .15s cubic-bezier(.16,1,.3,1)}
 .on .ln:nth-child(2)>span{transition-delay:.27s}.on .ln:nth-child(3)>span{transition-delay:.39s}.on .ln:nth-child(4)>span{transition-delay:.51s}
+.idea{margin:0;font-size:15px;line-height:1.45;color:var(--ink);max-width:400px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
+.made{margin:0;font-size:13px;line-height:1.5;color:var(--soft);max-width:400px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
+.on .idea{opacity:1;transform:none;transition:opacity 1s .55s,transform 1s .55s cubic-bezier(.16,1,.3,1)}
+.on .made{opacity:1;transform:none;transition:opacity 1s .75s,transform 1s .75s cubic-bezier(.16,1,.3,1)}
 .sub{margin:0;font-size:14px;line-height:1.5;color:var(--soft);max-width:360px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
 .on .sub{opacity:1;transform:none;transition:opacity 1s .6s,transform 1s .6s cubic-bezier(.16,1,.3,1)}
 .pass{display:grid;grid-template-columns:96px minmax(0,1fr);font-size:13px;line-height:1.4;clip-path:inset(0 0 100% 0);transition:clip-path .3s cubic-bezier(.7,0,.84,0)}
@@ -118,7 +122,7 @@ html,body{margin:0;background:#EFEBE4}
 .ch:not(.hero){top:auto;bottom:58px;max-height:64vh;overflow:visible}
 .ch.zal{top:auto}
 .ch:not(.hero) .h,.ch:not(.hero) .scrub,.ch:not(.hero) .quote{text-shadow:0 0 22px rgba(245,243,238,.55)}
-.dk .ch:not(.hero) .h,.dk .ch:not(.hero) .scrub,.dk .ch:not(.hero) .quote,.dk .ch:not(.hero) .sub,.dk .ch:not(.hero) dd{text-shadow:0 1px 18px rgba(0,0,0,.6)}
+.dk .ch:not(.hero) .h,.dk .ch:not(.hero) .scrub,.dk .ch:not(.hero) .quote,.dk .ch:not(.hero) .sub,.dk .ch:not(.hero) .idea,.dk .ch:not(.hero) .made{text-shadow:0 1px 18px rgba(0,0,0,.6)}
 .fx-side .ln>span{transform:translateX(-104%)}
 .ch:not(.hero) .steps li{opacity:.55}
 .ch:not(.hero) .steps li.on{opacity:1}
@@ -165,6 +169,8 @@ html,body{margin:0;background:#EFEBE4}
   .ch.C{left:50%;top:auto;bottom:72px;width:min(64vw,980px);transform:translateX(-50%);align-items:center;text-align:center}
   .h{font-size:clamp(44px,min(5vw,8vh),72px);line-height:.95;letter-spacing:-.045em}
   .sub{font-size:16px;max-width:420px}
+  .idea{font-size:18px;max-width:440px}
+  .made{font-size:14px;max-width:440px}
   .meta{font-size:11px}
   .pass{grid-template-columns:120px minmax(0,1fr);font-size:14px}
   .hdr{padding:24px 48px 0}
@@ -212,16 +218,18 @@ html,body{margin:0;background:#EFEBE4}
 }
 @media (hover:hover) and (pointer:fine) and (min-width:900px) and (min-aspect-ratio:19/20){.cursor{display:flex}}
 @media (max-width:899px), (max-aspect-ratio:19/20){
-  .on .meta{transition:opacity .5s}
-  .on .ln>span{transition:transform .8s cubic-bezier(.16,1,.3,1)}
+  .on .meta{transition:opacity .9s}
+  .on .ln>span{transition:transform 1.15s cubic-bezier(.16,1,.3,1)}
+  .on .idea{transition:opacity 1s .3s,transform 1s .3s cubic-bezier(.16,1,.3,1)}
+  .on .made{transition:opacity 1s .45s,transform 1s .45s cubic-bezier(.16,1,.3,1)}
   .on .ln:nth-child(2)>span{transition-delay:.07s}.on .ln:nth-child(3)>span{transition-delay:.14s}.on .ln:nth-child(4)>span{transition-delay:.21s}
-  .on.fx-blur .ln>span{transition:transform .8s cubic-bezier(.16,1,.3,1),filter .7s,opacity .6s}
-  .on .scrub,.on.fx-blur .scrub{transition:opacity .7s .05s,transform .8s .05s cubic-bezier(.16,1,.3,1),filter .7s .05s}
-  .on .sub{transition:opacity .7s .2s,transform .7s .2s cubic-bezier(.16,1,.3,1)}
+  .on.fx-blur .ln>span{transition:transform 1.15s cubic-bezier(.16,1,.3,1),filter 1s,opacity .9s}
+  .on .scrub,.on.fx-blur .scrub{transition:opacity 1s .1s,transform 1.15s .1s cubic-bezier(.16,1,.3,1),filter 1s .1s}
+  .on .sub{transition:opacity 1s .3s,transform 1s .3s cubic-bezier(.16,1,.3,1)}
   .on .pass{transition:clip-path .9s .2s cubic-bezier(.16,1,.3,1)}
   .on.fx-side .pass,.on.fx-side .steps{transition:transform .8s .2s cubic-bezier(.16,1,.3,1),opacity .7s .2s,clip-path .9s .2s cubic-bezier(.16,1,.3,1)}
 }
-@media (prefers-reduced-motion:reduce){.ln>span,.on .ln>span{transform:none;transition:none}.pass{clip-path:none}.cue span{animation:none}}
+@media (prefers-reduced-motion:reduce){.idea,.made{transform:none}.ln>span,.on .ln>span{transform:none;transition:none}.pass{clip-path:none}.cue span{animation:none}}
 </style>
 </helmet>
 <div class="film {{toneCls}} {{navCls}}" ref="{{setRoot}}">
@@ -250,31 +258,22 @@ html,body{margin:0;background:#EFEBE4}
   <section class="ch R {{c.k2}} fx-rise" aria-label="Работа «Лёгкость»">
     <div class="meta">Светлая серия</div>
     <h2 class="h"><span class="ln"><span>«Лёгкость»</span></span></h2>
-    <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Асимметрия и воздух: ветка жасмина уводит взгляд, плотный центр держит.</dd>
-      <dt>Состав</dt><dd>Садовые розы, эустома, ранункулюс, астильба, эвкалипт, жасмин</dd>
-      <dt class="opt">Подача</dt><dd class="opt">Керамическая ваза, лён, шёлковая лента</dd>
-    </dl>
+    <p class="idea">Асимметрия и воздух: ветка жасмина уводит взгляд, плотный центр держит.</p>
+    <p class="made">Садовые розы, эустома, ранункулюс, астильба, эвкалипт, жасмин.<span class="opt"> Керамическая ваза, лён, шёлковая лента.</span></p>
   </section>
 
   <section class="ch R {{c.k3}} fx-side" aria-label="Работа «Три розы и олива»">
     <div class="meta">Светлая серия</div>
     <h2 class="h"><span class="ln"><span>«Три розы</span></span><span class="ln"><span>и олива»</span></span></h2>
-    <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Здесь всего три розы и ветка оливы.</dd>
-      <dt>Состав</dt><dd>Три садовые розы, ветка оливы</dd>
-      <dt class="opt">Подача</dt><dd class="opt">Стекло и вода: стебли тоже часть работы</dd>
-    </dl>
+    <p class="idea">Здесь всего три садовые розы и ветка оливы.</p>
+    <p class="made">Стекло и вода: стебли тоже часть работы.</p>
   </section>
 
   <section class="ch {{c.k4}} fx-blur" aria-label="Работа «Нежность»">
     <div class="meta">Светлая серия</div>
     <h2 class="h"><span class="ln"><span>«Нежность»</span></span></h2>
-    <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Одна большая роза в центре, остальное вокруг неё.</dd>
-      <dt>Состав</dt><dd>Роза, ранункулюсы, душистый горошек, олива</dd>
-      <dt class="opt">Повод</dt><dd class="opt">Подарок</dd>
-    </dl>
+    <p class="idea">Одна большая роза в центре, остальное вокруг неё.</p>
+    <p class="made">Роза, ранункулюсы, душистый горошек, олива.<span class="opt"> Собрана в подарок.</span></p>
   </section>
 
   <section class="ch {{c.k5}} fx-side" aria-label="Процесс">
@@ -302,11 +301,8 @@ html,body{margin:0;background:#EFEBE4}
   <section class="ch R {{c.k8}} fx-side" aria-label="Работа «Тёмный сад»">
     <div class="meta">Тёмная серия</div>
     <h2 class="h"><span class="ln"><span>«Тёмный сад»</span></span></h2>
-    <dl class="pass" style="margin: 0">
-      <dt>Замысел</dt><dd>Бархат рядом с холодом: тёплые розы и почти чёрные анемоны в одной работе.</dd>
-      <dt>Состав</dt><dd>Розы цвета вина, анемоны, эвкалипт с семенами</dd>
-      <dt class="opt">Подача</dt><dd class="opt">Старое серебро на ножке</dd>
-    </dl>
+    <p class="idea">Бархат рядом с холодом: тёплые розы и почти чёрные анемоны в одной работе.</p>
+    <p class="made">Розы цвета вина, анемоны, эвкалипт с семенами.<span class="opt"> Старое серебро на ножке.</span></p>
   </section>
 
   <section class="ch {{c.k9}} fx-blur" aria-label="Замысел">
@@ -516,9 +512,9 @@ class Component extends DCLogic {
     if (n === this.state.cur && !this.tw) return;
     const from = this.y, to = this.rest(n), dist = Math.abs(n - this.state.cur);
     const port = this.isPort();
-    const dur = this.reduce ? 500 : (port ? Math.min(2600, 1500 + (dist - 1) * 180) : Math.min(3400, 2000 + (dist - 1) * 220));
+    const dur = this.reduce ? 500 : (port ? Math.min(3200, 2100 + (dist - 1) * 200) : Math.min(3400, 2000 + (dist - 1) * 220));
     this.dragT = 0; this.dragOff = 0;
-    this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false, showAt: port ? 0.42 : 0.62 };
+    this.tw = { from: from, to: to, start: performance.now(), dur: dur, target: n, shown: false, showAt: port ? 0.5 : 0.62 };
     this.setState({ ch: -1, cur: n, step: 0 });
     window.dispatchEvent(new CustomEvent('concept:final', { detail: n === this.SHOTS.length - 1 }));
   }
