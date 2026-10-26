@@ -142,20 +142,11 @@ ${email ? `<a class="mail" href="mailto:${email}?subject=${encodeURIComponent(T.
     true,
   );
 
-  // Последний кадр: через 1,5 с карточка открывается сама, раз за визит.
+  // Последний кадр: через 1,5 с карточка открывается сама — каждый раз, когда посетитель до него доходит.
   let finT = 0;
   addEventListener("concept:final", (e) => {
     clearTimeout(finT);
-    if (e.detail === false) return;
-    finT = setTimeout(() => {
-      try {
-        if (sessionStorage.getItem("concept-card-shown")) return;
-        sessionStorage.setItem("concept-card-shown", "1");
-      } catch {
-        /* хранилище недоступно */
-      }
-      if (veil.hidden) open();
-    }, 1500);
+    if (e.detail !== false) finT = setTimeout(() => veil.hidden && open(), 1500);
   });
 
   (document.body || document.documentElement).appendChild(host);
