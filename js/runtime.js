@@ -38,6 +38,10 @@ RT.boot=function(){
   const h=tpl.content.querySelector('helmet');[...h.children].forEach(c=>document.head.appendChild(c));h.remove();RT.tpl=tpl.content;RT.root=x;
   const code=document.querySelector('script[data-dc-script]').textContent;
   const C=new Function('DCLogic',code+';return Component')(DCLogic);
-  RT.c=new C({});RT.render();window.C=RT.c;if(RT.c.componentDidMount)RT.c.componentDidMount()};
+  RT.c=new C({});RT.render();window.C=RT.c;
+  // Запуск сцены — отдельной задачей: вместе со сборкой страницы они занимали главный поток одним длинным куском.
+  if(RT.c.componentDidMount)setTimeout(()=>RT.c.componentDidMount(),0)};
 RT.render=function(){const out=[];build(RT.tpl,RT.c.renderVals(),out);patchChildren(RT.root,out)};
-if(document.readyState==='loading')window.addEventListener('DOMContentLoaded',RT.boot);else RT.boot();
+// Сборка страницы — после первого кадра: обложка #cover уже в разметке и должна появиться сразу.
+const later=()=>{let on=false;const go=()=>{if(on)return;on=true;RT.boot()};requestAnimationFrame(()=>setTimeout(go,0));setTimeout(go,300)};
+if(document.readyState==='loading')window.addEventListener('DOMContentLoaded',later);else later();

@@ -32,7 +32,7 @@
     '  col+=vec3(.95,.62,.32)*edge*edge*.22*(1.-abs(uMix*2.-1.));}\n' +
     ' vec2 bd=normalize(vec2(.62,-1.));vec2 bn=vec2(-bd.y,bd.x);vec2 bp=uv-uBeamPos;float dist=dot(bp,bn);float along=dot(bp,bd);\n' +
     ' float beam=exp(-dist*dist/(.012+along*.02))*smoothstep(-.1,.4,along)*smoothstep(1.4,.3,along)*uBeam;\n' +
-    ' float haze=fbm(uv*vec2(4.,8.)+vec2(t*.05,t*.08));col+=col*beam*.7+vec3(.95,.74,.48)*beam*(.05+.06*haze);\n' +
+    ' if(beam>.002){float haze=fbm(uv*vec2(4.,8.)+vec2(t*.05,t*.08));col+=col*beam*.7+vec3(.95,.74,.48)*beam*(.05+.06*haze);}\n' +
     ' vec2 wr2=uRes*(uWin.zw-uWin.xy);float sa=wr2.x/wr2.y;float sc=mix(scr(uSide,uv),scr(uSideB,uv),smoothstep(.2,.8,uMix));\n' +
     ' col=mix(col*(1.-sc*.66),mix(col,vec3(.955,.94,.91),sc*.85),uTone);\n' +
     ' vec2 vv=(uv-.5)*vec2(sa,1.);col*=mix(mix(.55,.86,uTone),1.,smoothstep(1.15,.25,length(vv)*.95));\n' +
@@ -58,7 +58,8 @@
 
   // pseudo depth from luminance + saturation, blurred (subjects pop forward from dark grounds)
   function depthCanvas(img) {
-    var W = 160, H = Math.max(2, Math.round(160 * img.height / img.width));
+    // Карта глубины размытая: 80 px и ядро 3×3 дают ту же относительную размытость, что 160 px и 5×5, при работе в 11 раз меньше.
+    var W = 80, H = Math.max(2, Math.round(80 * img.height / img.width));
     var c = document.createElement('canvas'); c.width = W; c.height = H;
     var x = c.getContext('2d'); x.drawImage(img, 0, 0, W, H);
     var d = x.getImageData(0, 0, W, H), px = d.data, v = new Float32Array(W * H), i;
@@ -71,7 +72,7 @@
       var o = new Float32Array(W * H);
       for (var y = 0; y < H; y++) for (var xx = 0; xx < W; xx++) {
         var s = 0, n = 0;
-        for (var dy = -2; dy <= 2; dy++) for (var dx = -2; dx <= 2; dx++) {
+        for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) {
           var yy = y + dy, x2 = xx + dx; if (yy < 0 || yy >= H || x2 < 0 || x2 >= W) continue; s += v[yy * W + x2]; n++;
         }
         o[y * W + xx] = s / n;
@@ -90,7 +91,7 @@
     var prog, progP;
     try { prog = compile(gl, VS, FS); progP = compile(gl, VSP, FSP); } catch (e) { console.error('[flauver-scroll]', e); return { ok: false, error: String(e) }; }
     var vao = gl.createVertexArray();
-    var shots = opts.shots, imgs = opts.images, tex = [], dep = [], asp = [], loaded = 0, ready = false;
+    var shots = opts.shots, imgs = opts.images, tex = [], dep = [], asp = [], loaded = 0, ready = false, dead = false;
     var black = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, black); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([10, 8, 7, 255]));
     function mk(src) {
       var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
@@ -109,10 +110,13 @@
     function shotImg(s, portrait) { return (portrait && s.mimg !== undefined) ? s.mimg : s.img; }
     function isPortrait() { var w = canvas.clientWidth || window.innerWidth, h = canvas.clientHeight || window.innerHeight; return opts.portrait ? opts.portrait(w, h) : w / h < 0.95; }
     var first = shotImg(shots[0], isPortrait());
+    // Фоновое фото только скачивается и декодируется; в текстуру оно идёт, когда понадобится: заливка занимает главный поток и видеопамять.
+    var held = [], now_ = [];
+    function upload(i, im) { tex[i] = mk(im); dep[i] = mk(depthCanvas(im)); asp[i] = im.width / im.height; }
     function finish(i, im) {
-      if (im) { tex[i] = mk(im); dep[i] = mk(depthCanvas(im)); asp[i] = im.width / im.height; }
+      if (im) { if (now_[i]) upload(i, im); else held[i] = im; }
       done[i] = true; active--; loaded++;
-      if (!ready && done[first]) { ready = true; if (opts.onProgress) opts.onProgress(1); if (opts.onReady) opts.onReady(); }
+      if (!ready && done[first]) { ready = true; setTimeout(function () { bgOpen = true; pump(); }, 2500); if (opts.onProgress) opts.onProgress(1); if (opts.onReady) opts.onReady(); }
       pump();
     }
     function start(i) {
@@ -126,8 +130,22 @@
       im.onerror = function () { finish(i, null); };
       im.src = imgs[i];
     }
-    function pump() { while (active < PAR && queue.length) start(queue.shift()); }
-    function need(i, urgent) { if (asked[i]) return; asked[i] = true; if (urgent) queue.unshift(i); else queue.push(i); pump(); }
+    // Срочные кадры (текущий и ближайшие) — сразу; остальные — по одному с паузой, начиная через 2,5 с после готовности первого кадра:
+    // обработка каждого фото занимает главный поток, и подряд они блокировали страницу на старте.
+    var urgent = [], bgOpen = false, bgT = 0;
+    function pump() {
+      while (active < PAR && urgent.length) start(urgent.shift());
+      if (!bgOpen || !queue.length || active || bgT) return;
+      bgT = setTimeout(function () { bgT = 0; if (!active && queue.length && !dead) start(queue.shift()); pump(); }, 350);
+    }
+    function need(i, now) {
+      if (now) now_[i] = true;
+      if (now && held[i]) { upload(i, held[i]); held[i] = null; }
+      if (done[i]) return;
+      var q = queue.indexOf(i);
+      if (now && q >= 0) { queue.splice(q, 1); asked[i] = false; }
+      if (asked[i]) return; asked[i] = true; if (now) urgent.push(i); else queue.push(i); pump();
+    }
     need(first, true);
     (function () { var p = isPortrait(); shots.forEach(function (s) { need(shotImg(s, p), false); }); })();
 
@@ -155,12 +173,17 @@
     function onMove(e) { if (e.pointerType === 'touch') return; var r = canvas.getBoundingClientRect(); S.tpx = ((e.clientX - r.left) / r.width - 0.5) * 2; S.tpy = ((e.clientY - r.top) / r.height - 0.5) * -2; }
     window.addEventListener('pointermove', onMove, { passive: true });
 
-    var raf = 0, last = performance.now(), dead = false;
+    var raf = 0, last = performance.now(), scale = 1, slow = 0.016, scaleAt = 0;
     function frame(now) {
       if (dead) return;
       var dt = Math.min(0.1, (now - last) / 1000); last = now;
       var w = canvas.clientWidth, h = canvas.clientHeight, small = Math.min(w, h) < 700;
-      var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.6 : 1.5);
+      // Слабая графика: если кадры долго идут дольше 40 мс, сцена считается в меньшем разрешении (шаг вниз не чаще раза в секунду).
+      if (S.fade >= 1 && !document.hidden) {
+        slow = lerp(slow, dt, 0.08);
+        if (slow > 0.04 && now - scaleAt > 1000 && scale > 0.5) { scale = Math.max(0.5, scale * 0.75); scaleAt = now; slow = 0.03; }
+      }
+      var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.6 : 1.5) * scale;
       var W = Math.max(1, Math.round(w * dpr)), H = Math.max(1, Math.round(h * dpr));
       if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
       var prevY = S.y;
@@ -174,6 +197,7 @@
       var st = state(S.y, opts.portrait ? opts.portrait(w, h) : w / h < 0.95); S.cur = st;
       if (opts.onFrame) opts.onFrame(S.y, st);
       need(st.a.img, true); need(st.b.img, true);
+      var ahead = shots[Math.min(st.i + 2, shots.length - 1)]; if (ready) need(shotImg(ahead, opts.portrait ? opts.portrait(w, h) : w / h < 0.95), true);
 
       gl.viewport(0, 0, W, H); gl.disable(gl.BLEND);
       gl.useProgram(prog.p); var u = prog.u;
