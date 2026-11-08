@@ -142,10 +142,10 @@ html,body{margin:0;background:#EFEBE4}
 .chip.on{background:var(--ink);color:#F5F3EE}
 .ring{position:fixed;left:50%;top:calc((var(--bandR, 44vh) + 8vh) / 2);width:0;height:0;z-index:2;perspective:1300px;pointer-events:none;opacity:0;transition:opacity .9s}
 .ring.on{opacity:1}
-.spin{position:absolute;left:0;top:0;transform-style:preserve-3d;--rz:62vw}
+.spin{position:absolute;left:0;top:0;transform-style:preserve-3d;--rz:var(--ring-rz,62vw);transform:translateZ(calc(var(--rz) * -1)) rotateX(-6deg) rotateY(var(--ring-a,0deg))}
 .card{position:absolute;--cw:min(42vw,28vh);left:calc(var(--cw) / -2);top:calc(var(--cw) * -0.625);width:var(--cw);aspect-ratio:4/5;backface-visibility:hidden;box-shadow:0 30px 60px rgba(0,0,0,.5)}
 .card img{width:100%;height:100%;object-fit:cover;display:block}
-.card i{position:absolute;left:8px;right:8px;bottom:8px;font-style:normal;font-size:10px;line-height:1.25;color:#F2ECE3}
+.card i{position:absolute;left:8px;right:8px;bottom:8px;font-style:normal;font-size:10px;line-height:1.25;color:#F2ECE3;text-shadow:0 1px 3px rgba(0,0,0,.65)}
 .quote{margin:0;font-size:34px;font-weight:500;line-height:1.02;letter-spacing:-.04em}
 .cursor{position:fixed;left:0;top:0;transform:translate(-300px,-300px);width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;border:1px solid #F5F3EE;mix-blend-mode:difference;z-index:8;pointer-events:none;display:none;align-items:center;justify-content:center;font-size:11px;color:#F5F3EE;transition:width .3s,height .3s,margin .3s}
 
@@ -349,7 +349,6 @@ html,body{margin:0;background:#EFEBE4}
   <section class="ch R {{c.k11}} fx-side" aria-label="Контакты">
     <div class="meta">Контакты</div>
     <h2 class="h"><span class="ln"><span>Соберём работу</span></span><span class="ln"><span>для вас.</span></span></h2>
-    <button class="btn ia" data-cc-talk>Обсудить ваш бизнес</button>
   </section>
 
   <div class="ring {{ringOn}}" aria-hidden="true">
@@ -531,8 +530,10 @@ class Component extends DCLogic {
   request(d) {
     const c = this.state.cur, last = this.SHOTS.length - 1;
     if (this.tw || performance.now() < this.lockUntil) {
+      // Жесты во время перехода копятся (раньше в очереди был один, и при быстром листании
+      // часть жестов терялась): по окончании перехода сайт доезжает до нужного кадра.
       const tgt = this.tw ? this.tw.target : c;
-      if (this.nb(tgt, d) >= 0) this.queue = d;
+      if (this.walk(tgt, (this.queue || 0) + d) !== this.walk(tgt, this.queue || 0)) this.queue = (this.queue || 0) + d;
       return;
     }
     const n = this.nb(c, d);
@@ -540,6 +541,8 @@ class Component extends DCLogic {
     this.go(n);
   }
   step(d) { this.request(d); }
+  // Кадр в q шагах от i (по порядку показа), не дальше первого и последнего.
+  walk(i, q) { let n = i; for (let k = 0; k < Math.abs(q); k++) { const m = this.nb(n, Math.sign(q)); if (m < 0) break; n = m; } return n; }
   go(i) {
     const n = Math.max(0, Math.min(this.SHOTS.length - 1, i));
     if (n === this.state.cur && !this.tw) return;
@@ -563,7 +566,7 @@ class Component extends DCLogic {
       if (!t.shown && k > t.showAt) { t.shown = true; this.arrivedAt = now; this.setState({ ch: t.target, tch: t.target }); }
       if (k >= 1) {
         this.tw = null; this.restAt = now; this.lockUntil = now + 120;
-        if (this.queue) { const q = this.queue; this.queue = 0; this.lockUntil = 0; const n = this.nb(this.state.cur, q); if (n >= 0) this.go(n); }
+        if (this.queue) { const q = this.queue; this.queue = 0; this.lockUntil = 0; const n = this.walk(this.state.cur, q); if (n !== this.state.cur) this.go(n); }
       }
     } else {
       const c = this.state.cur, r = this.rest(c), m = this.driftMax(c);
@@ -578,12 +581,21 @@ class Component extends DCLogic {
     this.eng.setScroll(this.y);
     if (this.prog) this.prog.style.width = ((this.y / this.SHOTS[this.SHOTS.length - 1].s0) * 100).toFixed(2) + '%';
     const ch = this.state.ch;
+    // Кольцо галереи (глава 8). Поворот и радиус — переменными на <html>: встроенный стиль
+    // у .spin шаблон стирает при каждой перерисовке, и кольцо стояло без поворота и сдвига вглубь —
+    // задняя карточка показывалась в центре задом наперёд.
+    if (!this.spin || !this.spin.isConnected) this.spin = document.querySelector('.ring .spin');
     if (this.spin) {
       const wide = !this.portrait(window.innerWidth, window.innerHeight);
       const rz = wide ? 'min(26vw, 44vh)' : 'min(52vw, 34vh)';
-      this.spin.style.setProperty('--rz', rz);
+      const html = document.documentElement.style;
+      if (this.ringRz !== rz) { this.ringRz = rz; html.setProperty('--ring-rz', rz); }
       const a = (now / 1000) * 9 + (ch === 7 ? 0 : 40);
-      this.spin.style.transform = 'translateZ(-' + rz + ') rotateX(-6deg) rotateY(' + (-a).toFixed(2) + 'deg)';
+      html.setProperty('--ring-a', (-a).toFixed(2) + 'deg');
+      // Карточки, повёрнутые к зрителю изнанкой, скрыты явно: не во всех браузерах
+      // backface-visibility срабатывает, а изнанка — это подписи задом наперёд.
+      if (!this.ringCards || !this.ringCards[0]?.isConnected) this.ringCards = [...this.spin.querySelectorAll('.card')];
+      this.ringCards.forEach((c, n) => { const back = Math.cos((n * 45 - a) * Math.PI / 180) < 0.05; if (c.hidden !== back) c.hidden = back; });
     }
   }
   renderVals() {
